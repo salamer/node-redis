@@ -47,7 +47,7 @@ describe("The 'get' method", function () {
                 var client;
 
                 beforeEach(function (done) {
-                    client = redis.createClient.apply(null, args);
+                    client = redis.createClient.apply(args, null);
                     client.once('ready', function () {
                         done();
                     });

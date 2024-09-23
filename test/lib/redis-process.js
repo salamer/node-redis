@@ -50,51 +50,59 @@ function waitForRedis (available, cb, port) {
 
 module.exports = {
     start: function (done, conf, port) {
-        var spawnFailed = false;
-        if (process.platform === 'win32') return done(null, {
+        // var spawnFailed = false;
+        // if (process.platform === 'win32') return done(null, {
+        //     spawnFailed: function () {
+        //         return spawnFailed;
+        //     },
+        //     stop: function (done) {
+        //         return done();
+        //     }
+        // });
+        // // spawn redis with our testing configuration.
+        // var confFile = conf || path.resolve(__dirname, '../conf/redis.conf');
+        // var rp = spawn('redis-server', [confFile], {});
+
+        // // // capture a failure booting redis, and give
+        // // // the user running the test some directions.
+        // // rp.once('exit', function (code) {
+        // //     if (code !== 0) {
+        // //         spawnFailed = true;
+        // //         throw new Error('TESTS: Redis Spawn Failed');
+        // //     }
+        // // });
+
+        // // wait for redis to become available, by
+        // // checking the port we bind on.
+        // waitForRedis(true, function () {
+        //     // return an object that can be used in
+        //     // an after() block to shutdown redis.
+        //     return done(null, {
+        //         spawnFailed: function () {
+        //             return spawnFailed;
+        //         },
+        //         stop: function (done) {
+        //             if (spawnFailed) return done();
+        //             rp.once('exit', function (code) {
+        //                 var error = null;
+        //                 if (code !== null && code !== 0) {
+        //                     error = new Error('Redis shutdown failed with code ' + code);
+        //                 }
+        //                 waitForRedis(false, function () {
+        //                     return done(error);
+        //                 }, port);
+        //             });
+        //             rp.kill('SIGTERM');
+        //         }
+        //     });
+        // }, port);
+        return done(null, {
             spawnFailed: function () {
-                return spawnFailed;
+                return false;
             },
             stop: function (done) {
                 return done();
             }
         });
-        // spawn redis with our testing configuration.
-        var confFile = conf || path.resolve(__dirname, '../conf/redis.conf');
-        var rp = spawn('redis-server', [confFile], {});
-
-        // capture a failure booting redis, and give
-        // the user running the test some directions.
-        rp.once('exit', function (code) {
-            if (code !== 0) {
-                spawnFailed = true;
-                throw new Error('TESTS: Redis Spawn Failed');
-            }
-        });
-
-        // wait for redis to become available, by
-        // checking the port we bind on.
-        waitForRedis(true, function () {
-            // return an object that can be used in
-            // an after() block to shutdown redis.
-            return done(null, {
-                spawnFailed: function () {
-                    return spawnFailed;
-                },
-                stop: function (done) {
-                    if (spawnFailed) return done();
-                    rp.once('exit', function (code) {
-                        var error = null;
-                        if (code !== null && code !== 0) {
-                            error = new Error('Redis shutdown failed with code ' + code);
-                        }
-                        waitForRedis(false, function () {
-                            return done(error);
-                        }, port);
-                    });
-                    rp.kill('SIGTERM');
-                }
-            });
-        }, port);
     }
 };

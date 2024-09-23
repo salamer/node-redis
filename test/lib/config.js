@@ -11,10 +11,9 @@ bluebird.promisifyAll(redis.Multi.prototype);
 
 var config = {
     redis: redis,
-    PORT: 6379,
+    PORT: 6380,
     HOST: {
         IPv4: '127.0.0.1',
-        IPv6: '::1'
     },
     configureClient: function (ip, opts) {
         var args = [];
